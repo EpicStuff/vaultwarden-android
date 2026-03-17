@@ -25,6 +25,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        if ((userProperties["localSdk"] as String?).toBoolean()) {
+            mavenLocal()
+        }
         maven {
             name = "GitHubPackages (Bitwarden)"
             url = uri("https://maven.pkg.github.com/bitwarden/sdk")
@@ -32,9 +35,6 @@ dependencyResolutionManagement {
                 username = ""
                 password = userProperties["gitHubToken"] as String? ?: System.getenv("GITHUB_TOKEN")
             }
-        }
-        if ((userProperties["localSdk"] as String?).toBoolean()) {
-            mavenLocal()
         }
     }
 }

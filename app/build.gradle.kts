@@ -225,7 +225,7 @@ kotlin {
 configurations.all {
     resolutionStrategy.dependencySubstitution {
         if ((userProperties["localSdk"] as String?).toBoolean()) {
-            substitute(module("com.bitwarden:sdk-android"))
+            substitute(module("com.bitwarden:sdk-android.dev"))
                 .using(module("com.bitwarden:sdk-android.dev:LOCAL"))
         }
     }

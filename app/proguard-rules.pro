@@ -68,8 +68,8 @@
 
 # See https://github.com/java-native-access/jna/blob/fdb8695fb9b05fba467dadfe5735282f8bcc053d/www/FrequentlyAskedQuestions.md#jna-on-android
 -dontwarn java.awt.*
--keep class com.sun.jna.* { *; }
--keepclassmembers class * extends com.sun.jna.* { public *; }
+-keep class com.sun.jna.** { *; }
+-keepclassmembers class * extends com.sun.jna.** { public *; }
 
 # Keep annotated classes
 -keep @com.sun.jna.* class *

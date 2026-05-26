@@ -274,6 +274,37 @@ class EnvironmentViewModelTest : BaseViewModelTest() {
             }
         }
 
+    @Suppress("MaxLineLength")
+    @Test
+    fun `SaveClick should preserve http scheme on a cleartext self-hosted server URL`() =
+        runTest {
+            val viewModel = createViewModel()
+            viewModel.trySendAction(
+                EnvironmentAction.ServerUrlChange(serverUrl = "http://vaultwarden.lan:8080"),
+            )
+
+            viewModel.eventFlow.test {
+                viewModel.trySendAction(EnvironmentAction.SaveClick)
+                assertEquals(EnvironmentEvent.NavigateBack, awaitItem())
+                // http:// must NOT be upgraded to https://
+                assertEquals(
+                    Environment.SelfHosted(
+                        environmentUrlData = EnvironmentUrlDataJson(
+                            base = "http://vaultwarden.lan:8080",
+                            api = null,
+                            identity = null,
+                            icon = null,
+                            notifications = null,
+                            webVault = null,
+                            events = null,
+                            keyUri = null,
+                        ),
+                    ),
+                    fakeEnvironmentRepository.environment,
+                )
+            }
+        }
+
     @Test
     fun `ServerUrlChange should update the server URL`() {
         val viewModel = createViewModel()
